@@ -1,6 +1,5 @@
 import express from 'express';
 import { connectToDatabase } from './config/database.js';
-import { getApiBaseUrl } from './config/baseUrl.js';
 import activitiesRouter from './routes/activities.js';
 import healthRouter from './routes/health.js';
 import leaderboardRouter from './routes/leaderboard.js';
@@ -10,7 +9,10 @@ import workoutsRouter from './routes/workouts.js';
 
 const app = express();
 const port = Number(process.env.PORT ?? 8000);
-const baseUrl = getApiBaseUrl();
+const codespaceName = process.env.CODESPACE_NAME;
+const baseUrl = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev`
+  : 'http://localhost:8000';
 
 app.use(express.json());
 app.use('/api/health', healthRouter);
